@@ -1,0 +1,2 @@
+docker run --rm -v /opt/mosquitto/config:/mosquitto/config eclipse-mosquitto \
+  mosquitto_passwd -b -c /mosquitto/config/passwd remotake huabu91enjoqASDQ

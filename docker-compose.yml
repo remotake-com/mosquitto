@@ -1,0 +1,25 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    restart: always
+    volumes:
+      - ./config:/mosquitto/config
+      - ./data:/mosquitto/data
+      - ./log:/mosquitto/log
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mqtt.rule=Host(`${MQTT_DOMAIN}`)"
+      - "traefik.http.routers.mqtt.entrypoints=websecure"
+      - "traefik.http.routers.mqtt.tls.certresolver=letsencrypt"
+      - "traefik.http.services.mqtt.loadbalancer.server.port=9001"
+      #- "traefik.http.routers.mqtt.middlewares=mqtt-auth"
+      #- "traefik.http.middlewares.mqtt-auth.basicauth.users=${AUTH}"
+    ports:
+      - "1883:1883"
+    networks:
+      - webnet
+
+networks:
+  webnet:
+    external: true
